@@ -4,13 +4,22 @@
 // printf
 #include <stdio.h>
 // open
-#include <fcntl.h>
-// access
-#include <unistd.h>
-// strtod
-#include <stdlib.h>
+# include <fcntl.h>
 
-#include "libft.h"
+// mkdir
+// access
+# include <unistd.h>
+// stat
+# include <sys/stat.h>
+
+// strtod
+# include <stdlib.h>
+
+// strdup
+# include <string.h>
+
+# include "libft.h"
+# include "dirs_output.h"
 
 typedef struct s_data
 {
@@ -21,4 +30,7 @@ typedef struct s_data
 	char	*dir;
 }				t_data;
 
+char	*concat_strings(int n, ...);
+// ft_split
+// ft_mtxlen
 #endif

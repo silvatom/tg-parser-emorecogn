@@ -13,7 +13,7 @@ LIBFT_LINK	=	-L$(LIBFT_DIR) -l$(LIBFT)
 
 # SRCS
 SRCS		=	srcs
-MAIN		=	main.c
+MAIN		=	main.c concat_string.c
 
 
 
@@ -49,7 +49,7 @@ clean:
 
 fclean: clean
 	@make -C $(LIBFT_DIR) $@
-	rm -rf $(NAME)
+	rm -rf $(NAME) output
 
 re: fclean all
 
@@ -57,6 +57,6 @@ valgrind:
 
 debug: $(SRCS_PATH)
 	$(CC) -g $(CFLAGS) $(INCFLAGS) $^ $(LIBFT_LINK)  -o $@
-	gdb --tui --args $@ va_affwild_validation.csv
+	gdb --tui --args $@ input_files/va_affwild_validation.csv
 
 .PHONY: all clean fclean valgrind debug
