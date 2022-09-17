@@ -22,6 +22,14 @@ int	main(int argc, char *argv[])
 	struct stat st = {0};
 	if (stat("output", &st) == -1)
 		mkdir("output", 0744);
+	else
+	{
+		FILE *fp;
+		fp = popen("rm -rf output", "r");
+		// rmdir("output");
+		mkdir("output", 0744);
+	}
+
 	// create output dir
 	// create files with text
 
@@ -44,7 +52,7 @@ int	main(int argc, char *argv[])
 		close(fd1);
 		i++;
 	}
-
+	i = 0;
     while ((read = getline(&line, &len, fp)) != -1) {
         // printf("Retrieved line of length %zu:\n", read);
         // printf("%s", line);
@@ -86,7 +94,6 @@ int	main(int argc, char *argv[])
 		// free(class->fname);
 		// free(class->dir);
     }
-	
 	printf("ok\n");
     fclose(fp);
     exit(EXIT_SUCCESS);
