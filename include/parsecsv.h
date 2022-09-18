@@ -21,6 +21,8 @@
 # include "libft.h"
 # include "dirs_output.h"
 
+# define OUTPUT_DIR "predfiles"
+
 typedef struct s_data
 {
 	double	valence;

@@ -3,12 +3,12 @@
 # Script to compare the quantity of lines in the validation file and in the output file
 
 COMMON="/home/anjose-d/tg/tg-parser-emorecogn"
-OUTPUT="output"
-VALIDATION="validation"
-EQUIVALENT="$COMMON/$VALIDATION"
+OUTPUT="predfiles"
+VALTRUE="validation"
+VALPRED="$COMMON/$VALTRUE"
 
 for filename in /home/anjose-d/tg/tg-parser-emorecogn/$OUTPUT/*; do
-	if [ "$(wc -l < $filename)" -eq "$(wc -l < $EQUIVALENT/$(basename $filename).txt)" ];
+	if [ "$(wc -l < $filename)" -eq "$(wc -l < $VALPRED/$(basename $filename).txt)" ];
 		then
 			echo 'Match!';
 		else

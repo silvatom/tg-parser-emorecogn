@@ -20,14 +20,13 @@ int	main(int argc, char *argv[])
 
 	// create output files
 	struct stat st = {0};
-	if (stat("output", &st) == -1)
-		mkdir("output", 0744);
+	if (stat(OUTPUT_DIR, &st) == -1)
+		mkdir(OUTPUT_DIR, 0744);
 	else
 	{
 		FILE *fp;
 		fp = popen("rm -rf output", "r");
-		// rmdir("output");
-		mkdir("output", 0744);
+		mkdir(OUTPUT_DIR, 0744);
 	}
 
 	// create output dir
@@ -39,7 +38,7 @@ int	main(int argc, char *argv[])
         exit(EXIT_FAILURE);
 	
 	// change to the directory where the files will be placed
-	chdir("output");
+	chdir(OUTPUT_DIR);
 
 	// create files to be written on
 	int i = 0;
