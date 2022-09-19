@@ -29,9 +29,6 @@ int	main(int argc, char *argv[])
 		mkdir(OUTPUT_DIR, 0744);
 	}
 
-	// create output dir
-	// create files with text
-
 	// open file
     fp = fopen(argv[1], "r");
     if (fp == NULL)
@@ -53,10 +50,7 @@ int	main(int argc, char *argv[])
 	}
 	i = 0;
     while ((read = getline(&line, &len, fp)) != -1) {
-        // printf("Retrieved line of length %zu:\n", read);
-        // printf("%s", line);
-
-		t_data *class = malloc(sizeof(t_data));
+  		t_data *class = malloc(sizeof(t_data));
 
 		// split line
 		char **atts = ft_split(line, ',');
@@ -93,11 +87,9 @@ int	main(int argc, char *argv[])
 		// free(class->fname);
 		// free(class->dir);
     }
-	printf("ok\n");
+	printf(".csv file is parsed successfully\n");
     fclose(fp);
     exit(EXIT_SUCCESS);
-
-	return (0);
 }
 
 int	validation(int argc, char *argv[])

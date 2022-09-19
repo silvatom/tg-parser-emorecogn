@@ -1,7 +1,14 @@
+from os import truncate
+import pandas as pd
 import numpy as np
 from numpy import genfromtxt
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_percentage_error
+import subprocess
+
+print("Parse result from file (C executable)")
+subprocess.run(["make"])
+subprocess.run(["./parsecsv", "input_files/va_affwild_validation.csv"])
 
 # defines
 COMMON_PATH = '/home/anjose-d/tg/tg-parser-emorecogn/'
@@ -104,18 +111,21 @@ def rmse(x_true, y_pred):
 def mape(x_true, y_pred):
     # ref: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.mean_absolute_percentage_error.html#sklearn.metrics.mean_absolute_percentage_error
 	return mean_absolute_percentage_error(x_true, y_pred)
-
+ 
+df = pd.DataFrame(columns=["filename", "ccc_valence", "ccc_arousal",
+                        	"rmse_valence", "rmse_arousal",
+                         	"mape_valence", "mape_arousal", "status"])
+print("Generating results...")
 for fname in filenames:
 	truefile = genfromtxt(TRUE_PATH + fname[0] + '.txt', delimiter=',')
-	predfile = genfromtxt(PRED_PATH + fname[0], delimiter=',') 
+	predfile = genfromtxt(PRED_PATH + fname[0], delimiter=',')
 	
 	# pular primeira linha (header)
 	truefile = truefile[1:]
 	predfile = predfile[1:]
- 
+	
 	# get the size of the array
 	if (truefile.shape[0] == predfile.shape[0]):
-		print(fname[0])
 		# ccc calculation
 		ccc_valence = ccc(truefile[:,0], predfile[:,0])
 		ccc_arousal = ccc(truefile[:,1], predfile[:,1])
@@ -126,12 +136,21 @@ for fname in filenames:
 		mape_valence = mape(truefile[:,0], predfile[:,0])
 		mape_arousal = mape(truefile[:,1], predfile[:,1])
 
-		print("ccc_valence: ", ccc_valence, "| ccc_arousal: ", ccc_arousal)
-		# print("ccc_arousal: ", ccc_arousal)
-		print("rmse_valence: ", rmse_valence, "| rmse_arousal: ", rmse_arousal)
-		# print("rmse_arousal: ", rmse_arousal)
-		print("mape_valence: ", mape_valence, "| mape_arousal: ", mape_arousal)
-		# print("mape_arousal: ", mape_arousal)
-
+		# construir planilha
+		df = df.append({"filename": fname[0], 
+                  		"ccc_valence": ccc_valence, "ccc_arousal": ccc_arousal,
+                     	"rmse_valence": rmse_valence, "rmse_arousal": rmse_arousal,
+                      	"mape_valence": mape_valence, "mape_arousal": mape_arousal,
+						"status": "OK"}, ignore_index=True)
 	else:
-		print(fname[0], ": pred and true files don't match the number of rows!")
+		df = df.append({"filename": fname[0],
+						"ccc_valence": np.nan, "ccc_arousal": np.nan,
+                     	"rmse_valence": np.nan, "rmse_arousal": np.nan,
+                      	"mape_valence": np.nan, "mape_arousal": np.nan,
+						"status": "pred and true files don't match the number of rows!"}, ignore_index=True)
+
+file_name = 'calc_tg.xlsx'
+
+# save the excelsheet
+df.to_excel(file_name)
+print('Spreedsheet worked just fine!')
